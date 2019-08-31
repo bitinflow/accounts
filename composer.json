@@ -1,0 +1,45 @@
+{
+    "name": "ghostzero/bitinflow-accounts",
+    "description": "bitinflow Accounts Client for Laravel",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "René Preuß",
+            "email": "rene@preuss.io"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "illuminate/support": "^5.5",
+        "illuminate/console": "^5.5",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0",
+        "orchestra/testbench": "~3.8.0",
+        "codedungeon/phpunit-result-printer": "^0.26.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "GhostZero\\BitinflowAccounts\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GhostZero\\BitinflowAccounts\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "GhostZero\\BitinflowAccounts\\Providers\\BitinflowAccountsServiceProvider"
+            ],
+            "aliases": {
+                "BitinflowAccounts": "GhostZero\\BitinflowAccounts\\Facades\\BitinflowAccounts"
+            }
+        }
+    }
+}

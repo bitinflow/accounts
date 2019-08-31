@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="vendor/autoload.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         verbose="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         printerClass="\Codedungeon\PHPUnitPrettyResultPrinter\Printer">
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+        <env name="CLIENT_ID" value="30" force="true" />
+        <env name="CLIENT_KEY" value="E9p7Ieb4fCwWnipNgQUxE6LtInAP9i4ofHCPAx3E" force="true" />
+        <env name="CLIENT_ACCESS_TOKEN" value="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFlOTU5Mzc2NDdlNDU4MmNjNGNjOTFhY2YwNjQzNTM3ZGI0NTE3ZTg0ODJkMjNiZTFjYTYwNjc0MmQyZjk1NmY5NmE3ZTk1YzFmODBiYjAyIn0.eyJhdWQiOiIxOCIsImp0aSI6IjFlOTU5Mzc2NDdlNDU4MmNjNGNjOTFhY2YwNjQzNTM3ZGI0NTE3ZTg0ODJkMjNiZTFjYTYwNjc0MmQyZjk1NmY5NmE3ZTk1YzFmODBiYjAyIiwiaWF0IjoxNTY3MjQ4MTU0LCJuYmYiOjE1NjcyNDgxNTQsImV4cCI6MTU5ODg3MDU1NCwic3ViIjoiMzgiLCJzY29wZXMiOlsicmVhZF91c2VyIiwiYXBpIl19.IROsZlKhIqeFhQfz0PVGb6pUvuukOaShDNui8ArTb9WHy-z7BJha-50YWAgdGUb7IEX-5zBBiouvlnUb789O81hi2ZkPCcgHMw5zapXRaIwbKOMMjPy9-dLXtRz285bki4AuEz0jCyFVXemTIePPMSCdoOT2ZjN3jv18WpoOxEKr8RZK5Cy0LRQkbcWqbVU8rGdtxdiTwe0LDOwuf9N6s4I7FJJ5bEU7i7h3CYw7KX08sUURLerK9zm0BAJmKW_QtMBMVlzVLw42A8MrkfspSY9lCIkzWMLYpZoVHZkavW3_xJ2X0K9WLS9KJTysqS3jm_DBwWUh80mqfoCW8ubwELcoxp-NevlV5RMieu-8tB45xz-wMLYuHrN-5NH3M-_o_G5TTl7cdevYUsLnloQIc2IvEJDsSgDN3LxFI5eQdtnQAtjboVJ9RC670bqAlyIyd2EXk1Ptw8xZU9JmQKt2EzG0VpK0COnjGdaGMAF_tDHhgekTHIe8cKumrf65dFWImkuH-HlPxM4V-P8IZZLWNCtFsIOXuA4Pwkxlgv5S8pS0jbrMWP3j-ngpI0_2pSLO__rG5Bc-EjPC5ch6nyyuxPdyFtSwWSc_97a0sSNYtpzinihStJvN5_dqOL5vD18Sc0gnm3tS_DRDmuZBcKwvCXg3TuvnrG-ttwpXClX67YY" force="true" />
+    </php>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+        </whitelist>
+    </filter>
+</phpunit>
