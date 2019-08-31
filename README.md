@@ -1,0 +1,155 @@
+# bitinflow Accounts
+
+[![Latest Stable Version](https://img.shields.io/packagist/v/ghostzero/bitinflow-accounts.svg?style=flat-square)](https://packagist.org/packages/ghostzero/bitinflow-accounts)
+[![Total Downloads](https://img.shields.io/packagist/dt/ghostzero/bitinflow-accounts.svg?style=flat-square)](https://packagist.org/packages/ghostzero/bitinflow-accounts)
+[![License](https://img.shields.io/packagist/l/ghostzero/bitinflow-accounts.svg?style=flat-square)](https://packagist.org/packages/ghostzero/bitinflow-accounts)
+
+PHP bitinflow Accounts API Client for Laravel 5+
+
+## Table of contents
+
+1. [Installation](#installation)
+2. [Configuration](#configuration)
+3. [Examples](#examples)
+4. [Documentation](#documentation)
+6. [Development](#Development)
+
+## Installation
+
+```
+composer require ghostzero/bitinflow-accounts
+```
+
+**If you use Laravel 5.5+ you are already done, otherwise continue.**
+
+Add Service Provider to your `app.php` configuration file:
+
+```php
+GhostZero\BitinflowAccounts\Providers\BitinflowAccountsServiceProvider::class,
+```
+
+## Configuration
+
+Copy configuration to config folder:
+
+```
+$ php artisan vendor:publish --provider="GhostZero\BitinflowAccounts\Providers\BitinflowAccountsServiceProvider"
+```
+
+Add environmental variables to your `.env`
+
+```
+BITINFLOW_ACCOUNTS_KEY=
+BITINFLOW_ACCOUNTS_SECRET=
+BITINFLOW_ACCOUNTS_REDIRECT_URI=http://localhost
+```
+
+## Examples
+
+#### Basic
+
+```php
+$bitinflowAccounts = new GhostZero\BitinflowAccounts\BitinflowAccounts();
+
+$bitinflowAccounts->setClientId('abc123');
+
+// Get SSH Key by User ID
+$result = $bitinflowAccounts->getSshKeysByUserId(38);
+
+// Check, if the query was successfull
+if ( ! $result->success()) {
+    die('Ooops: ' . $result->error());
+}
+
+// Shift result to get single key data
+$sshKey = $result->shift();
+
+echo $sshKey->name;
+```
+
+#### Setters
+
+```php
+$bitinflowAccounts = new GhostZero\BitinflowAccounts\BitinflowAccounts();
+
+$bitinflowAccounts->setClientId('abc123');
+$bitinflowAccounts->setClientSecret('abc456');
+$bitinflowAccounts->setToken('abcdef123456');
+
+$bitinflowAccounts = $bitinflowAccounts->withClientId('abc123');
+$bitinflowAccounts = $bitinflowAccounts->withClientSecret('abc123');
+$bitinflowAccounts = $bitinflowAccounts->withToken('abcdef123456');
+```
+
+#### OAuth Tokens
+
+```php
+$bitinflowAccounts = new GhostZero\BitinflowAccounts\BitinflowAccounts();
+
+$bitinflowAccounts->setClientId('abc123');
+$bitinflowAccounts->setToken('abcdef123456');
+
+$result = $bitinflowAccounts->getAuthedUser();
+
+$user = $userResult->shift();
+```
+
+```php
+$bitinflowAccounts->setToken('uvwxyz456789');
+
+$result = $bitinflowAccounts->getAuthedUser();
+```
+
+```php
+$result = $bitinflowAccounts->withToken('uvwxyz456789')->getAuthedUser();
+```
+
+#### Facade
+
+```php
+use GhostZero\BitinflowAccounts\Facades\BitinflowAccounts;
+
+BitinflowAccounts::withClientId('abc123')->withToken('abcdef123456')->getAuthedUser();
+```
+
+## Documentation
+
+### Users
+
+```php
+public function getAuthedUser()
+```
+
+### SshKeys
+
+```php
+public function getSshKeysByUserId(int $id)
+public function createSshKey(string $publicKey, string $name = NULL)
+public function deleteSshKey(int $id)
+```
+
+[**OAuth Scopes Enums**](https://git.preuss.io/ghostzero/bitinflow-accounts/blob/master/src/Enums/Scope.php)
+
+## Development
+
+#### Run Tests
+
+```shell
+composer test
+```
+
+```shell
+CLIENT_ID=xxxx CLIENT_KEY=yyyy CLIENT_ACCESS_TOKEN=zzzz composer test
+```
+
+#### Generate Documentation
+
+```shell
+composer docs
+```
+
+---
+
+Join the bitinflow Discord!
+
+[![Discord](https://discordapp.com/api/guilds/373468864098336768/embed.png?style=banner2)](https://discord.gg/2ZrCe2h)

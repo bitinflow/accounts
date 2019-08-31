@@ -1,6 +1,6 @@
 {
     "name": "ghostzero/bitinflow-accounts",
-    "description": "bitinflow Accounts Client for Laravel",
+    "description": "PHP bitinflow Accounts API Client for Laravel 5+",
     "license": "MIT",
     "authors": [
         {
@@ -30,7 +30,8 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit"
+        "test": "vendor/bin/phpunit",
+        "docs": "php generator/generate-docs.php"
     },
     "extra": {
         "laravel": {
