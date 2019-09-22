@@ -17,8 +17,10 @@ use GuzzleHttp\Exception\RequestException;
 class BitinflowAccounts
 {
 
-    use Traits\UsersTrait;
+    use Traits\ChargesTrait;
+    use Traits\CheckoutSessionsTrait;
     use Traits\SshKeysTrait;
+    use Traits\UsersTrait;
 
     const BASE_URI = 'https://accounts.bitinflow.com/api/';
     const OAUTH_BASE_URI = 'https://accounts.bitinflow.com/api/';

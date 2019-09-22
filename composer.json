@@ -10,9 +10,11 @@
     ],
     "require": {
         "php": ">=7.2",
+        "ext-json": "*",
         "illuminate/support": "^5.5",
         "illuminate/console": "^5.5",
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^6.3",
+        "socialiteproviders/manager": "^3.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0",
@@ -21,12 +23,12 @@
     },
     "autoload": {
         "psr-4": {
-            "GhostZero\\BitinflowAccounts\\": "src"
+            "GhostZero\\BitinflowAccounts\\": "src/GhostZero/BitinflowAccounts"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "GhostZero\\BitinflowAccounts\\Tests\\": "tests"
+            "GhostZero\\BitinflowAccounts\\Tests\\": "tests/GhostZero/BitinflowAccounts"
         }
     },
     "scripts": {

@@ -9,9 +9,10 @@ PHP bitinflow Accounts API Client for Laravel 5+
 ## Table of contents
 
 1. [Installation](#installation)
-2. [Configuration](#configuration)
-3. [Examples](#examples)
-4. [Documentation](#documentation)
+2. [Event Listener](#event-listener)
+3. [Configuration](#configuration)
+4. [Examples](#examples)
+5. [Documentation](#documentation)
 6. [Development](#Development)
 
 ## Installation
@@ -28,6 +29,28 @@ Add Service Provider to your `app.php` configuration file:
 GhostZero\BitinflowAccounts\Providers\BitinflowAccountsServiceProvider::class,
 ```
 
+## Event Listener
+
+- Add `SocialiteProviders\Manager\SocialiteWasCalled` event to your `listen[]` array in `app/Providers/EventServiceProvider`.
+- Add your listeners (i.e. the ones from the providers) to the `SocialiteProviders\Manager\SocialiteWasCalled[]` that you just created.
+- The listener that you add for this provider is `'GhostZero\\BitinflowAccounts\\Socialite\\BitinflowExtendSocialite@handle',`.
+- Note: You do not need to add anything for the built-in socialite providers unless you override them with your own providers.
+
+
+```
+/**
+ * The event handler mappings for the application.
+ *
+ * @var array
+ */
+protected $listen = [
+    \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+        // add your listeners (aka providers) here
+        'GhostZero\\BitinflowAccounts\\Socialite\\BitinflowExtendSocialite@handle',
+    ],
+];
+```
+
 ## Configuration
 
 Copy configuration to config folder:
@@ -42,6 +65,18 @@ Add environmental variables to your `.env`
 BITINFLOW_ACCOUNTS_KEY=
 BITINFLOW_ACCOUNTS_SECRET=
 BITINFLOW_ACCOUNTS_REDIRECT_URI=http://localhost
+```
+
+You will need to add an entry to the services configuration file so that after config files are cached for usage in production environment (Laravel command `artisan config:cache`) all config is still available.
+
+**Add to `config/services.php`:**
+
+```php
+'bitinflow-accounts' => [
+    'client_id' => env('BITINFLOW_ACCOUNTS_KEY'),
+    'client_secret' => env('BITINFLOW_ACCOUNTS_SECRET'),
+    'redirect' => env('BITINFLOW_ACCOUNTS_REDIRECT_URI')
+],
 ```
 
 ## Examples
@@ -114,10 +149,20 @@ BitinflowAccounts::withClientId('abc123')->withToken('abcdef123456')->getAuthedU
 
 ## Documentation
 
-### Users
+### Charges
 
 ```php
-public function getAuthedUser()
+public function createCharge(array $parameters)
+public function getCharge(string $id)
+public function updateCharge(string $id, array $parameters)
+public function captureCharge(string $id, array $parameters = [])
+```
+
+### CheckoutSessions
+
+```php
+public function getCheckoutSession(string $id)
+public function createCheckoutSession(array $parameters)
 ```
 
 ### SshKeys
@@ -128,7 +173,13 @@ public function createSshKey(string $publicKey, string $name = NULL)
 public function deleteSshKey(int $id)
 ```
 
-[**OAuth Scopes Enums**](https://git.preuss.io/ghostzero/bitinflow-accounts/blob/master/src/Enums/Scope.php)
+### Users
+
+```php
+public function getAuthedUser()
+```
+
+[**OAuth Scopes Enums**](https://github.com/ghostzero/bitinflow-accounts/blob/master/src/Enums/Scope.php)
 
 ## Development
 

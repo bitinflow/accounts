@@ -39,7 +39,7 @@ trait SshKeysTrait
         return $this->post('ssh-keys', [
             'public_key' => $publicKey,
             'name' => $name,
-        ], null);
+        ]);
     }
 
     /**
@@ -51,6 +51,6 @@ trait SshKeysTrait
      */
     public function deleteSshKey(int $id): Result
     {
-        return $this->delete("ssh-keys/$id", [], null);
+        return $this->delete("ssh-keys/$id", []);
     }
 }

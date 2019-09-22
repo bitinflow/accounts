@@ -76,6 +76,8 @@ $markdown = collect(class_uses(BitinflowAccounts::class))
         return $markdown;
     })->join(PHP_EOL . PHP_EOL);
 
+$markdown = str_replace("array (\n)", '[]', $markdown);
+
 $content = file_get_contents(__DIR__ . '/../README.stub');
 
 $content = str_replace('<!-- GENERATED-DOCS -->', $markdown, $content);
