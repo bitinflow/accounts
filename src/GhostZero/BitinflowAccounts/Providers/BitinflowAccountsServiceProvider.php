@@ -17,7 +17,7 @@ class BitinflowAccountsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            dirname(__DIR__) . '/../config/bitinflow-accounts-api.php' => config_path('bitinflow-accounts-api.php'),
+            dirname(__DIR__) . '/../../../config/bitinflow-accounts-api.php' => config_path('bitinflow-accounts-api.php'),
         ], 'config');
     }
 
@@ -28,7 +28,7 @@ class BitinflowAccountsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/../config/bitinflow-accounts-api.php', 'bitinflow-accounts-api'
+            dirname(__DIR__) . '/../../../config/bitinflow-accounts-api.php', 'bitinflow-accounts-api'
         );
         $this->app->singleton(BitinflowAccounts::class, function () {
             return new BitinflowAccounts;
