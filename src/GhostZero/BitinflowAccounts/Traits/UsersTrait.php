@@ -18,6 +18,18 @@ trait UsersTrait
      */
     public function getAuthedUser(): Result
     {
-        return $this->get('users/me', [], null);
+        return $this->get('users/me');
+    }
+
+    /**
+     * Creates a new user on behalf of the current user.
+     *
+     * @param array $parameters
+     *
+     * @return Result
+     */
+    public function createUser(array $parameters): Result
+    {
+        return $this->post('users', $parameters);
     }
 }

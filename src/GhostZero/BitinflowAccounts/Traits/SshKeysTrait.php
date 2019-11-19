@@ -27,7 +27,7 @@ trait SshKeysTrait
     }
 
     /**
-     * Get currently authed user with Bearer Token
+     * Creates ssh key for the currently authed user
      *
      * @param string      $publicKey
      * @param string|null $name
@@ -43,7 +43,7 @@ trait SshKeysTrait
     }
 
     /**
-     * Get currently authed user with Bearer Token
+     * Deletes a given ssh key for the currently authed user
      *
      * @param int $id
      *

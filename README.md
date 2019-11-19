@@ -184,6 +184,7 @@ public function deleteSshKey(int $id)
 
 ```php
 public function getAuthedUser()
+public function createUser(array $parameters)
 ```
 
 [**OAuth Scopes Enums**](https://github.com/ghostzero/bitinflow-accounts/blob/master/src/Enums/Scope.php)
