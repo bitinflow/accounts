@@ -155,14 +155,21 @@ BitinflowAccounts::withClientId('abc123')->withToken('abcdef123456')->getAuthedU
 public function createCharge(array $parameters)
 public function getCharge(string $id)
 public function updateCharge(string $id, array $parameters)
-public function captureCharge(string $id, array $parameters = [])
+public function captureCharge(string $id, array $parameters = array ())
 ```
 
-### CheckoutSessions
+### Documents
 
 ```php
-public function getCheckoutSession(string $id)
-public function createCheckoutSession(array $parameters)
+public function createDocument(array $parameters)
+public function createDocumentDownloadUrl(string $identifier, CarbonInterface $expiresAt = NULL)
+```
+
+### PaymentIntents
+
+```php
+public function getPaymentIntent(string $id)
+public function createPaymentIntent(array $parameters)
 ```
 
 ### SshKeys

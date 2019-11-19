@@ -32,12 +32,12 @@ trait DocumentsTrait
     /**
      * Create a Documents download url
      *
-     * @param mixed                $identifier
+     * @param string               $identifier
      * @param CarbonInterface|null $expiresAt
      *
      * @return Result
      */
-    public function createDocumentDownloadUrl($identifier, ?CarbonInterface $expiresAt = null): Result
+    public function createDocumentDownloadUrl(string $identifier, ?CarbonInterface $expiresAt = null): Result
     {
         return $this->post("documents/$identifier/download-url", [
             'expires_at' => $expiresAt
