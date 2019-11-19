@@ -13,15 +13,14 @@ use GhostZero\BitinflowAccounts\Tests\TestCases\ApiTestCase;
 class ApiSshKeysTest extends ApiTestCase
 {
 
-    public function testGetSshKeyByUserId()
+    public function testGetSshKeyByUserId(): void
     {
         $this->registerResult($result = $this->getClient()->getSshKeysByUserId(38));
-        $this->assertInstanceOf(Result::class, $result);
         $this->assertEquals('rene.preuss@check24.de', $result->shift()->name);
         $this->assertGreaterThanOrEqual(2, $result->count());
     }
 
-    public function testSshKeyManagement()
+    public function testSshKeyManagement(): void
     {
         $customName = 'Hello World!';
         $publicKey = 'ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEA3H7sYVrVCwwYIuRm3on3S9n/BCd2mBJrgCk6xTerbNmt0RyUZ+RtGsK6UYkgnRR2WWq9/Pv2s3RXJXPxbsIEYmKCcTdLUvDk56x9385cIVUX4w016mpe/8lyu+mIdqWYKsJMoab0oReCDX8Y9qBcaffDh8AgmYVN+86gXgoP1ITe9BDYrFiR6U571VyLDVN3OYOYPMF3/L9f0knMfM0T4LrS8oi6faVBCxZHRoBGtGmsTBkE0KwplYQFN2aa4Mxab+rTUFmJr3LYEcJF0J8wNJ3eEDFNOR0254jrjbGGAXGsc+cxJoNzech+GBkRMKMpNU0lds6VxP0ZB25VfzjEmQ== René Preuß';

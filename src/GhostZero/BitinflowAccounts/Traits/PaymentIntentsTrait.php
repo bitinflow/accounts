@@ -11,32 +11,32 @@ use GhostZero\BitinflowAccounts\Result;
 /**
  * @author René Preuß <rene@preuss.io>
  */
-trait CheckoutSessionsTrait
+trait PaymentIntentsTrait
 {
 
     use Get, Post;
 
     /**
-     * Get a Session object
+     * Get a Payment Intent object
      *
      * @param string $id
      *
      * @return Result         Result object
      */
-    public function getCheckoutSession(string $id): Result
+    public function getPaymentIntent(string $id): Result
     {
-        return $this->get("checkout/sessions/$id");
+        return $this->get("payment-intents/$id");
     }
 
     /**
-     * Create a Session object
+     * Create a Payment Intent object
      *
      * @param array $parameters
      *
      * @return Result
      */
-    public function createCheckoutSession(array $parameters): Result
+    public function createPaymentIntent(array $parameters): Result
     {
-        return $this->post('payments/sessions', $parameters);
+        return $this->post('payment-intents', $parameters);
     }
 }

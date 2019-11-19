@@ -14,12 +14,12 @@ use GhostZero\BitinflowAccounts\Tests\TestCases\TestCase;
 class ServiceInstantiationTest extends TestCase
 {
 
-    public function testInstance()
+    public function testInstance(): void
     {
         $this->assertInstanceOf(BitinflowAccounts::class, app(BitinflowAccounts::class));
     }
 
-    public function testFacade()
+    public function testFacade(): void
     {
         $this->assertInstanceOf(BitinflowAccounts::class, BitinflowAccountsFacade::getFacadeRoot());
     }

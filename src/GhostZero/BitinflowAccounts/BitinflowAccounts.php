@@ -18,12 +18,13 @@ class BitinflowAccounts
 {
 
     use Traits\ChargesTrait;
-    use Traits\CheckoutSessionsTrait;
+    use Traits\DocumentsTrait;
+    use Traits\PaymentIntentsTrait;
     use Traits\SshKeysTrait;
     use Traits\UsersTrait;
 
-    const BASE_URI = 'https://accounts.bitinflow.com/api/';
-    const OAUTH_BASE_URI = 'https://accounts.bitinflow.com/api/';
+    private const BASE_URI = 'https://accounts.bitinflow.com/api/';
+    private const OAUTH_BASE_URI = 'https://accounts.bitinflow.com/api/';
 
     /**
      * Guzzle is used to make http requests.
