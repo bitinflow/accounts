@@ -6,7 +6,7 @@ namespace GhostZero\BitinflowAccounts;
 
 use Exception;
 use GhostZero\BitinflowAccounts\Helpers\Paginator;
-use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
 use stdClass;
 
 
@@ -60,7 +60,7 @@ class Result
 
     /**
      * Original Guzzle HTTP Response.
-     * @var Response|null
+     * @var ResponseInterface|null
      */
     public $response;
 
@@ -73,11 +73,11 @@ class Result
     /**
      * Constructor,
      *
-     * @param Response|null   $response HTTP response
+     * @param ResponseInterface|null   $response HTTP response
      * @param Exception|mixed $exception Exception, if present
      * @param null|Paginator  $paginator Paginator, if present
      */
-    public function __construct(?Response $response, Exception $exception = null, Paginator $paginator = null)
+    public function __construct(?ResponseInterface $response, Exception $exception = null, Paginator $paginator = null)
     {
         $this->response = $response;
         $this->success = $exception === null;

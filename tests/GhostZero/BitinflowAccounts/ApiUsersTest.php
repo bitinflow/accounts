@@ -17,6 +17,7 @@ class ApiUsersTest extends ApiTestCase
     {
         $this->getClient()->withToken($this->getToken());
         $this->registerResult($result = $this->getClient()->getAuthedUser());
+        $this->assertTrue($result->success());
         $this->assertEquals('rene@preuss.io', $result->data()->email);
     }
 
@@ -29,7 +30,9 @@ class ApiUsersTest extends ApiTestCase
             'first_name' => 'René',
             'last_name' => 'Preuß',
             'email' => $testEmailAddress,
-            'terms_accepted_at' => now()->toDateTimeString(),
+            'password' => 'Password1',
+            'password_confirmation' => 'Password1',
+            'tos' => true,
         ]));
         $this->assertEquals($testEmailAddress, $result->data()->email);
     }

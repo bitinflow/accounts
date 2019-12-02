@@ -90,8 +90,9 @@ class BitinflowAccounts
     }
 
     /**
-     * @internal only for internal and debug purposes.
      * @param string $baseUrl
+     *
+     * @internal only for internal and debug purposes.
      */
     public static function setBaseUrl(string $baseUrl): void
     {
@@ -398,13 +399,13 @@ class BitinflowAccounts
     {
         $headers = [
             'Client-ID' => $this->getClientId(),
+            'Accept' => 'application/json',
         ];
         if ($this->token) {
             $headers['Authorization'] = 'Bearer ' . $this->token;
         }
         if ($json) {
             $headers['Content-Type'] = 'application/json';
-            $headers['Accept'] = 'application/json';
         }
 
         return $headers;

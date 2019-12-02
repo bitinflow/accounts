@@ -30,6 +30,6 @@ trait UsersTrait
      */
     public function createUser(array $parameters): Result
     {
-        return $this->post('users', $parameters);
+        return $this->post('v2/users', $parameters);
     }
 }
