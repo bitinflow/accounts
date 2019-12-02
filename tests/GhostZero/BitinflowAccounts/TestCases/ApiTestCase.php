@@ -18,6 +18,11 @@ abstract class ApiTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        if ($this->getBaseUrl()) {
+            BitinflowAccounts::setBaseUrl($this->getBaseUrl());
+        }
+
         if (!$this->getClientId()) {
             $this->markTestSkipped('No Client-ID given');
         }
@@ -32,6 +37,11 @@ abstract class ApiTestCase extends TestCase
         self::$rateLimitRemaining = $result->rateLimit('remaining');
 
         return $result;
+    }
+
+    protected function getBaseUrl()
+    {
+        return getenv('BASE_URL');
     }
 
     protected function getClientId()

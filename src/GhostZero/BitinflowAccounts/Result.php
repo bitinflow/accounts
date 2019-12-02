@@ -60,7 +60,7 @@ class Result
 
     /**
      * Original Guzzle HTTP Response.
-     * @var Response
+     * @var Response|null
      */
     public $response;
 
@@ -73,17 +73,17 @@ class Result
     /**
      * Constructor,
      *
-     * @param Response        $response HTTP response
+     * @param Response|null   $response HTTP response
      * @param Exception|mixed $exception Exception, if present
      * @param null|Paginator  $paginator Paginator, if present
      */
-    public function __construct(Response $response, Exception $exception = null, Paginator $paginator = null)
+    public function __construct(?Response $response, Exception $exception = null, Paginator $paginator = null)
     {
         $this->response = $response;
         $this->success = $exception === null;
         $this->exception = $exception;
-        $this->status = $response->getStatusCode();
-        $jsonResponse = @json_decode($response->getBody()->getContents());
+        $this->status = $response ? $response->getStatusCode() : 500;
+        $jsonResponse = $response ? @json_decode($response->getBody()->getContents(), false) : null;
         if ($jsonResponse !== null) {
             $this->setProperty($jsonResponse, 'data');
             $this->setProperty($jsonResponse, 'total');
@@ -99,10 +99,10 @@ class Result
      * @param string      $responseProperty Response property name
      * @param string|null $attribute Class property name
      */
-    private function setProperty(stdClass $jsonResponse, string $responseProperty, string $attribute = null)
+    private function setProperty(stdClass $jsonResponse, string $responseProperty, string $attribute = null): void
     {
         $classAttribute = $attribute ?? $responseProperty;
-        if (!empty($jsonResponse) && property_exists($jsonResponse, $responseProperty)) {
+        if ($jsonResponse !== null && property_exists($jsonResponse, $responseProperty)) {
             $this->{$classAttribute} = $jsonResponse->{$responseProperty};
         } elseif ($responseProperty === 'data') {
             $this->{$classAttribute} = $jsonResponse;
@@ -174,7 +174,7 @@ class Result
      * Set the Paginator to fetch the first set of results.
      * @return null|Paginator
      */
-    public function first()
+    public function first(): ?Paginator
     {
         return $this->paginator !== null ? $this->paginator->first() : null;
     }
@@ -183,7 +183,7 @@ class Result
      * Set the Paginator to fetch the next set of results.
      * @return null|Paginator
      */
-    public function next()
+    public function next(): ?Paginator
     {
         return $this->paginator !== null ? $this->paginator->next() : null;
     }
@@ -192,7 +192,7 @@ class Result
      * Set the Paginator to fetch the last set of results.
      * @return null|Paginator
      */
-    public function back()
+    public function back(): ?Paginator
     {
         return $this->paginator !== null ? $this->paginator->back() : null;
     }
@@ -200,7 +200,7 @@ class Result
     /**
      * Get rate limit information.
      *
-     * @param  string|null $key Get defined index
+     * @param string|null $key Get defined index
      *
      * @return string|array|null
      */
@@ -224,8 +224,8 @@ class Result
     /**
      * Insert users in data response.
      *
-     * @param  string $identifierAttribute Attribute to identify the users
-     * @param  string $insertTo Data index to insert user data
+     * @param string $identifierAttribute Attribute to identify the users
+     * @param string $insertTo Data index to insert user data
      *
      * @return self
      */
@@ -235,7 +235,7 @@ class Result
         $userIds = collect($data)->map(function ($item) use ($identifierAttribute) {
             return $item->{$identifierAttribute};
         })->toArray();
-        if (count($userIds) == 0) {
+        if (count($userIds) === 0) {
             return $this;
         }
         $users = collect($this->bitinflow->getUsersByIds($userIds)->data);

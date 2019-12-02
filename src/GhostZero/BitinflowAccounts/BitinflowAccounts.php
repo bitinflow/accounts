@@ -2,6 +2,7 @@
 
 namespace GhostZero\BitinflowAccounts;
 
+use GhostZero\BitinflowAccounts\ApiOperations;
 use GhostZero\BitinflowAccounts\Exceptions\RequestRequiresAuthenticationException;
 use GhostZero\BitinflowAccounts\Exceptions\RequestRequiresClientIdException;
 use GhostZero\BitinflowAccounts\Exceptions\RequestRequiresRedirectUriException;
@@ -23,8 +24,12 @@ class BitinflowAccounts
     use Traits\SshKeysTrait;
     use Traits\UsersTrait;
 
-    private const BASE_URI = 'https://accounts.bitinflow.com/api/';
-    private const OAUTH_BASE_URI = 'https://accounts.bitinflow.com/api/';
+    use ApiOperations\Delete;
+    use ApiOperations\Get;
+    use ApiOperations\Post;
+    use ApiOperations\Put;
+
+    private static $baseUrl = 'https://accounts.bitinflow.com/api/';
 
     /**
      * Guzzle is used to make http requests.
@@ -76,9 +81,21 @@ class BitinflowAccounts
         if ($redirectUri = config('bitinflow-accounts-api.redirect_url')) {
             $this->setRedirectUri($redirectUri);
         }
+        if ($redirectUri = config('bitinflow-accounts-api.base_url')) {
+            self::setBaseUrl($redirectUri);
+        }
         $this->client = new Client([
-            'base_uri' => self::BASE_URI,
+            'base_uri' => self::$baseUrl,
         ]);
+    }
+
+    /**
+     * @internal only for internal and debug purposes.
+     * @param string $baseUrl
+     */
+    public static function setBaseUrl(string $baseUrl): void
+    {
+        self::$baseUrl = $baseUrl;
     }
 
     /**
@@ -98,7 +115,7 @@ class BitinflowAccounts
     /**
      * Set client id.
      *
-     * @param  string $clientId bitinflow Accounts client id
+     * @param string $clientId bitinflow Accounts client id
      *
      * @return void
      */
@@ -110,7 +127,7 @@ class BitinflowAccounts
     /**
      * Fluid client id setter.
      *
-     * @param  string $clientId bitinflow Accounts client id.
+     * @param string $clientId bitinflow Accounts client id.
      *
      * @return self
      */
@@ -138,7 +155,7 @@ class BitinflowAccounts
     /**
      * Set client secret.
      *
-     * @param  string $clientSecret bitinflow Accounts client secret
+     * @param string $clientSecret bitinflow Accounts client secret
      *
      * @return void
      */
@@ -150,7 +167,7 @@ class BitinflowAccounts
     /**
      * Fluid client secret setter.
      *
-     * @param  string $clientSecret bitinflow Accounts client secret
+     * @param string $clientSecret bitinflow Accounts client secret
      *
      * @return self
      */
@@ -178,7 +195,7 @@ class BitinflowAccounts
     /**
      * Set redirect url.
      *
-     * @param  string $redirectUri
+     * @param string $redirectUri
      *
      * @return void
      */
@@ -190,7 +207,7 @@ class BitinflowAccounts
     /**
      * Fluid redirect url setter.
      *
-     * @param  string $redirectUri
+     * @param string $redirectUri
      *
      * @return self
      */
@@ -219,7 +236,7 @@ class BitinflowAccounts
     /**
      * Set OAuth token.
      *
-     * @param  string $token bitinflow Accounts OAuth token
+     * @param string $token bitinflow Accounts OAuth token
      *
      * @return void
      */
@@ -231,7 +248,7 @@ class BitinflowAccounts
     /**
      * Fluid OAuth token setter.
      *
-     * @param  string $token bitinflow Accounts OAuth token
+     * @param string $token bitinflow Accounts OAuth token
      *
      * @return self
      */
@@ -251,7 +268,7 @@ class BitinflowAccounts
      * @throws GuzzleException
      * @throws RequestRequiresClientIdException
      */
-    public function get(string $path = '', array $parameters = [], Paginator $paginator = null)
+    public function get(string $path = '', array $parameters = [], Paginator $paginator = null): Result
     {
         return $this->query('GET', $path, $parameters, $paginator);
     }
@@ -265,7 +282,7 @@ class BitinflowAccounts
      * @throws GuzzleException
      * @throws RequestRequiresClientIdException
      */
-    public function post(string $path = '', array $parameters = [], Paginator $paginator = null)
+    public function post(string $path = '', array $parameters = [], Paginator $paginator = null): Result
     {
         return $this->query('POST', $path, $parameters, $paginator);
     }
@@ -279,7 +296,7 @@ class BitinflowAccounts
      * @throws GuzzleException
      * @throws RequestRequiresClientIdException
      */
-    public function delete(string $path = '', array $parameters = [], Paginator $paginator = null)
+    public function delete(string $path = '', array $parameters = [], Paginator $paginator = null): Result
     {
         return $this->query('DELETE', $path, $parameters, $paginator);
     }
@@ -293,7 +310,7 @@ class BitinflowAccounts
      * @throws GuzzleException
      * @throws RequestRequiresClientIdException
      */
-    public function put(string $path = '', array $parameters = [], Paginator $paginator = null)
+    public function put(string $path = '', array $parameters = [], Paginator $paginator = null): Result
     {
         return $this->query('PUT', $path, $parameters, $paginator);
     }
@@ -307,7 +324,7 @@ class BitinflowAccounts
      * @throws GuzzleException
      * @throws RequestRequiresClientIdException
      */
-    public function json(string $method, string $path = '', array $body = null)
+    public function json(string $method, string $path = '', array $body = null): Result
     {
         if ($body) {
             $body = json_encode(['data' => $body]);
@@ -319,11 +336,11 @@ class BitinflowAccounts
     /**
      * Build query & execute.
      *
-     * @param  string     $method HTTP method
-     * @param  string     $path Query path
-     * @param  array      $parameters Query parameters
-     * @param  Paginator  $paginator Paginator object
-     * @param  mixed|null $jsonBody JSON data
+     * @param string     $method HTTP method
+     * @param string     $path Query path
+     * @param array      $parameters Query parameters
+     * @param Paginator  $paginator Paginator object
+     * @param mixed|null $jsonBody JSON data
      *
      * @return Result     Result object
      * @throws GuzzleException
@@ -338,7 +355,7 @@ class BitinflowAccounts
             $response = $this->client->request($method, $path, [
                 'headers' => $this->buildHeaders($jsonBody ? true : false),
                 'query' => $this->buildQuery($parameters),
-                'json' => $jsonBody ? $jsonBody : null,
+                'json' => $jsonBody ?: null,
             ]);
             $result = new Result($response, null, $paginator);
         } catch (RequestException $exception) {
@@ -352,7 +369,7 @@ class BitinflowAccounts
     /**
      * Build query with support for multiple smae first-dimension keys.
      *
-     * @param  array $query
+     * @param array $query
      *
      * @return string
      */
@@ -372,7 +389,7 @@ class BitinflowAccounts
     /**
      * Build headers for request.
      *
-     * @param  bool $json Body is JSON
+     * @param bool $json Body is JSON
      *
      * @return array
      * @throws RequestRequiresClientIdException

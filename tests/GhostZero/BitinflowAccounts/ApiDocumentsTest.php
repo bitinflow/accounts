@@ -45,7 +45,7 @@ class ApiDocumentsTest extends ApiTestCase
 
         $expiresAt = now()->addHours(2);
 
-        $result = $this->getClient()->createDocumentDownloadUrl(1, $expiresAt);
+        $result = $this->getClient()->createDocumentDownloadUrl('1', $expiresAt);
 
         $this->registerResult($result);
         $this->assertTrue($result->success());
