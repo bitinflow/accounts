@@ -24,8 +24,8 @@ trait OauthTrait
     public function retrievingToken(string $grantType, array $attributes): Result
     {
         try {
-            $response = $this->client->request('POST', '/oauth/token', $attributes + [
-                    'form_params' => [
+            $response = $this->client->request('POST', '/oauth/token', [
+                    'form_params' => $attributes + [
                         'grant_type' => $grantType,
                         'client_id' => $this->getClientId(),
                         'client_secret' => $this->getClientSecret(),
