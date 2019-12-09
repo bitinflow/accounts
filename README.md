@@ -165,6 +165,12 @@ public function createDocument(array $parameters)
 public function createDocumentDownloadUrl(string $identifier, CarbonInterface $expiresAt = NULL)
 ```
 
+### Oauth
+
+```php
+public function retrievingToken(string $grantType, array $attributes)
+```
+
 ### PaymentIntents
 
 ```php

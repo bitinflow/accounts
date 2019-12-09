@@ -20,6 +20,7 @@ class BitinflowAccounts
 
     use Traits\ChargesTrait;
     use Traits\DocumentsTrait;
+    use Traits\OauthTrait;
     use Traits\PaymentIntentsTrait;
     use Traits\SshKeysTrait;
     use Traits\UsersTrait;
