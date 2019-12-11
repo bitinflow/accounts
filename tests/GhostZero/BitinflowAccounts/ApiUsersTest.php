@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GhostZero\BitinflowAccounts\Tests;
 
+use GhostZero\BitinflowAccounts\Enums\Scope;
 use GhostZero\BitinflowAccounts\Tests\TestCases\ApiTestCase;
 use Illuminate\Support\Str;
 
@@ -25,15 +26,20 @@ class ApiUsersTest extends ApiTestCase
     {
         $testEmailAddress = $this->createRandomEmail();
 
-        $this->getClient()->withToken($this->getToken());
+        $this->registerResult($result = $this->getClient()->retrievingToken('client_credentials', [
+            'scope' => Scope::USERS_CREATE,
+        ]));
+
+        $this->getClient()->withToken($result->data()->access_token);
         $this->registerResult($result = $this->getClient()->createUser([
             'first_name' => 'René',
             'last_name' => 'Preuß',
             'email' => $testEmailAddress,
             'password' => 'Password1',
             'password_confirmation' => 'Password1',
-            'tos' => true,
+            'terms_accepted' => true,
         ]));
+        $this->assertTrue($result->success(), $result->error());
         $this->assertEquals($testEmailAddress, $result->data()->email);
     }
 

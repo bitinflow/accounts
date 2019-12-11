@@ -30,6 +30,8 @@ class Scope
     // Manage a authorized user object.
     public const USERS_EDIT = 'users:edit';
 
+    public const USERS_CREATE = 'users:create';
+
     // Read authorized user´s transactions.
     public const TRANSACTIONS_READ = 'transactions:read';
 
