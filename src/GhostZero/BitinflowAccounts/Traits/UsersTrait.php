@@ -32,4 +32,18 @@ trait UsersTrait
     {
         return $this->post('v2/users', $parameters);
     }
+
+    /**
+     * Checks if the given email exists.
+     *
+     * @param string $email
+     *
+     * @return Result
+     */
+    public function isEmailExisting(string $email): Result
+    {
+        return $this->post('v2/users/check-email', [
+            'email' => $email,
+        ]);
+    }
 }

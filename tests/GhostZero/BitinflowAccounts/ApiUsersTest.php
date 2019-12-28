@@ -22,6 +22,20 @@ class ApiUsersTest extends ApiTestCase
         $this->assertEquals('rene@preuss.io', $result->data()->email);
     }
 
+    public function testEmailAvailabilityNonExisting(): void
+    {
+        $this->getClient()->withToken($this->getToken());
+        $this->registerResult($result = $this->getClient()->isEmailExisting('rene+non-existing@preuss.io'));
+        $this->assertTrue(!$result->success());
+    }
+
+    public function testEmailAvailabilityExisting(): void
+    {
+        $this->getClient()->withToken($this->getToken());
+        $this->registerResult($result = $this->getClient()->isEmailExisting('rene@preuss.io'));
+        $this->assertTrue($result->success());
+    }
+
     public function testCreateUser(): void
     {
         $testEmailAddress = $this->createRandomEmail();
