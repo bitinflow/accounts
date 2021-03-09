@@ -13,7 +13,7 @@
         "ext-json": "*",
         "illuminate/support": "^8.0",
         "illuminate/console": "^8.0",
-        "guzzlehttp/guzzle": "^6.3",
+        "guzzlehttp/guzzle": "^6.3|^7.0.1",
         "socialiteproviders/manager": "^3.4"
     },
     "require-dev": {
