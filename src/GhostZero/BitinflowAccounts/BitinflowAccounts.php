@@ -33,6 +33,27 @@ class BitinflowAccounts
     private static $baseUrl = 'https://accounts.bitinflow.com/api/';
 
     /**
+     * The name for API token cookies.
+     *
+     * @var string
+     */
+    public static $cookie = 'bitinflow_token';
+
+    /**
+     * Indicates if Bitinflow Accounts should ignore incoming CSRF tokens.
+     *
+     * @var bool
+     */
+    public static $ignoreCsrfToken = false;
+
+    /**
+     * Indicates if Bitinflow Accounts should unserializes cookies.
+     *
+     * @var bool
+     */
+    public static $unserializesCookies = false;
+
+    /**
      * Guzzle is used to make http requests.
      * @var \GuzzleHttp\Client
      */
@@ -88,6 +109,49 @@ class BitinflowAccounts
         $this->client = new Client([
             'base_uri' => self::$baseUrl,
         ]);
+    }
+
+    /**
+     * Get or set the name for API token cookies.
+     *
+     * @param  string|null  $cookie
+     * @return string|static
+     */
+    public static function cookie($cookie = null)
+    {
+        if (is_null($cookie)) {
+            return static::$cookie;
+        }
+
+        static::$cookie = $cookie;
+
+        return new static;
+    }
+
+    /**
+     * Set the current user for the application with the given scopes.
+     *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable|Traits\HasBitinflowTokens  $user
+     * @param  array  $scopes
+     * @param  string  $guard
+     * @return \Illuminate\Contracts\Auth\Authenticatable
+     */
+    public static function actingAs($user, $scopes = [], $guard = 'api')
+    {
+
+        $user->withBitinflowAccessToken((object) [
+            'scopes' => $scopes
+        ]);
+
+        if (isset($user->wasRecentlyCreated) && $user->wasRecentlyCreated) {
+            $user->wasRecentlyCreated = false;
+        }
+
+        app('auth')->guard($guard)->setUser($user);
+
+        app('auth')->shouldUse($guard);
+
+        return $user;
     }
 
     /**
