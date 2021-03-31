@@ -31,11 +31,9 @@ trait HasBitinflowTokens
      */
     public function bitinflowTokenCan(string $scope): bool
     {
-        if (in_array('*', $this->accessToken->scopes)) {
-            return true;
-        }
+        $scopes = $this->accessToken ? $this->accessToken->scopes : [];
 
-        return $this->accessToken ? in_array($scope, $this->accessToken->scopes) : false;
+        return in_array('*', $scopes) || in_array($scope, $this->accessToken->scopes);
     }
 
     /**
