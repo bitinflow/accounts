@@ -9,12 +9,12 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.2|^8.0",
         "ext-json": "*",
-        "illuminate/support": "^8.0",
-        "illuminate/console": "^8.0",
-        "guzzlehttp/guzzle": "^6.3|^7.0.1",
-        "socialiteproviders/manager": "^3.4",
+        "illuminate/support": "~5.4|~5.7.0|~5.8.0|^6.0|^7.0|^8.0",
+        "illuminate/console": "~5.4|~5.7.0|~5.8.0|^6.0|^7.0|^8.0",
+        "guzzlehttp/guzzle": "^6.3|^7.0",
+        "socialiteproviders/manager": "^3.4|^4.0.1",
         "firebase/php-jwt": "^5.2"
     },
     "require-dev": {
