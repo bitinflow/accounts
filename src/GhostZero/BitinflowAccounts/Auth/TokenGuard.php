@@ -7,7 +7,7 @@ use Firebase\JWT\JWT;
 use GhostZero\BitinflowAccounts\BitinflowAccounts;
 use GhostZero\BitinflowAccounts\Helpers\JwtParser;
 use GhostZero\BitinflowAccounts\Traits\HasBitinflowTokens;
-use Illuminate\Auth\Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Container\Container;
