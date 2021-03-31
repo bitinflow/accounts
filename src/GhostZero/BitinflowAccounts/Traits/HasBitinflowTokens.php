@@ -2,7 +2,6 @@
 
 namespace GhostZero\BitinflowAccounts\Traits;
 
-use Illuminate\Container\Container;
 use stdClass;
 
 trait HasBitinflowTokens
@@ -27,11 +26,15 @@ trait HasBitinflowTokens
     /**
      * Determine if the current API token has a given scope.
      *
-     * @param string $scopeUserProvider
+     * @param string $scope
      * @return bool
      */
     public function bitinflowTokenCan(string $scope): bool
     {
+        if (in_array('*', $this->accessToken->scopes)) {
+            return true;
+        }
+
         return $this->accessToken ? in_array($scope, $this->accessToken->scopes) : false;
     }
 

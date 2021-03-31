@@ -137,7 +137,7 @@ class TokenGuard
         // is physically logged into the application via the application's interface.
         /** @var Authenticatable|HasBitinflowTokens $user */
         if ($user = $this->provider->retrieveById($token['sub'])) {
-            return $user->withBitinflowAccessToken((object)['scopes' => '*']);
+            return $user->withBitinflowAccessToken((object)['scopes' => ['*']]);
         }
 
         return null;
