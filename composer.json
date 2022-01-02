@@ -20,7 +20,7 @@
     "require-dev": {
         "phpunit/phpunit": "^8.0|^9.0",
         "orchestra/testbench": "^6.0",
-        "codedungeon/phpunit-result-printer": "^0.26.2"
+        "codedungeon/phpunit-result-printer": "^0.31"
     },
     "autoload": {
         "psr-4": {
