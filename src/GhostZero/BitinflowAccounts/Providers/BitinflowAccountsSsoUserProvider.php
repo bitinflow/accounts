@@ -41,16 +41,24 @@ class BitinflowAccountsSsoUserProvider implements UserProvider
     public function retrieveById($identifier)
     {
         $model = $this->createModel();
+        $token = $this->request->bearerToken();
 
         $user = $this->newModelQuery($model)
             ->where($model->getAuthIdentifierName(), $identifier)
             ->first();
 
+        // Update access token when updated
+        if ($this->accessTokenField) {
+            $user[$this->accessTokenField] = $token;
+
+            if ($user->isDirty()) {
+                $user->save();
+            }
+        }
+
         if ($user) {
             return $user;
         }
-
-        $token = $this->request->bearerToken();
 
         $this->bitinflowAccounts->setToken($token);
 
