@@ -56,7 +56,7 @@ protected $listen = [
 Copy configuration to config folder:
 
 ```
-$ php artisan vendor:publish --provider="GhostZero\BitinflowAccounts\Providers\BitinflowAccountsServiceProvider"
+$ bitinflow-accounts
 ```
 
 Add environmental variables to your `.env`
@@ -148,22 +148,6 @@ BitinflowAccounts::withClientId('abc123')->withToken('abcdef123456')->getAuthedU
 ```
 
 ## Documentation
-
-### Charges
-
-```php
-public function createCharge(array $parameters)
-public function getCharge(string $id)
-public function updateCharge(string $id, array $parameters)
-public function captureCharge(string $id, array $parameters = array ())
-```
-
-### Documents
-
-```php
-public function createDocument(array $parameters)
-public function createDocumentDownloadUrl(string $identifier, CarbonInterface $expiresAt = NULL)
-```
 
 ### Oauth
 

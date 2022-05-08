@@ -18,12 +18,11 @@ use GuzzleHttp\Exception\RequestException;
 class BitinflowAccounts
 {
 
-    use Traits\ChargesTrait;
-    use Traits\DocumentsTrait;
     use Traits\OauthTrait;
-    use Traits\PaymentIntentsTrait;
     use Traits\SshKeysTrait;
     use Traits\UsersTrait;
+
+    use Traits\HasBitinflowPaymentsWallet;
 
     use ApiOperations\Delete;
     use ApiOperations\Get;
