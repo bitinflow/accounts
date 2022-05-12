@@ -1,8 +1,9 @@
 # bitinflow Accounts
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/ghostzero/bitinflow-accounts.svg?style=flat-square)](https://packagist.org/packages/ghostzero/bitinflow-accounts)
-[![Total Downloads](https://img.shields.io/packagist/dt/ghostzero/bitinflow-accounts.svg?style=flat-square)](https://packagist.org/packages/ghostzero/bitinflow-accounts)
-[![License](https://img.shields.io/packagist/l/ghostzero/bitinflow-accounts.svg?style=flat-square)](https://packagist.org/packages/ghostzero/bitinflow-accounts)
+<a href="https://packagist.org/packages/ghostzero/bitinflow-accounts"><img src="https://img.shields.io/packagist/dt/ghostzero/bitinflow-accounts" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/ghostzero/bitinflow-accounts"><img src="https://img.shields.io/packagist/v/ghostzero/bitinflow-accounts" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/ghostzero/bitinflow-accounts"><img src="https://img.shields.io/packagist/l/ghostzero/bitinflow-accounts" alt="License"></a>
+<a href="https://ghostzero.dev/discord"><img src="https://discordapp.com/api/guilds/590942233126240261/embed.png?style=shield" alt="Discord"></a>
 
 PHP bitinflow Accounts API Client for Laravel 5+
 
