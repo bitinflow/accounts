@@ -1,5 +1,5 @@
 {
-    "name": "ghostzero/bitinflow-accounts",
+    "name": "bitinflow/accounts",
     "description": "PHP bitinflow Accounts API Client for Laravel 5+",
     "license": "MIT",
     "authors": [
