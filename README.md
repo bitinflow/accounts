@@ -27,7 +27,7 @@ composer require ghostzero/bitinflow-accounts
 Add Service Provider to your `app.php` configuration file:
 
 ```php
-GhostZero\BitinflowAccounts\Providers\BitinflowAccountsServiceProvider::class,
+Bitinflow\Accounts\Providers\BitinflowAccountsServiceProvider::class,
 ```
 
 ## Event Listener
@@ -85,7 +85,7 @@ You will need to add an entry to the services configuration file so that after c
 #### Basic
 
 ```php
-$bitinflowAccounts = new GhostZero\BitinflowAccounts\BitinflowAccounts();
+$bitinflowAccounts = new Bitinflow\Accounts\BitinflowAccounts();
 
 $bitinflowAccounts->setClientId('abc123');
 
@@ -106,7 +106,7 @@ echo $sshKey->name;
 #### Setters
 
 ```php
-$bitinflowAccounts = new GhostZero\BitinflowAccounts\BitinflowAccounts();
+$bitinflowAccounts = new Bitinflow\Accounts\BitinflowAccounts();
 
 $bitinflowAccounts->setClientId('abc123');
 $bitinflowAccounts->setClientSecret('abc456');
@@ -120,7 +120,7 @@ $bitinflowAccounts = $bitinflowAccounts->withToken('abcdef123456');
 #### OAuth Tokens
 
 ```php
-$bitinflowAccounts = new GhostZero\BitinflowAccounts\BitinflowAccounts();
+$bitinflowAccounts = new Bitinflow\Accounts\BitinflowAccounts();
 
 $bitinflowAccounts->setClientId('abc123');
 $bitinflowAccounts->setToken('abcdef123456');
@@ -143,7 +143,7 @@ $result = $bitinflowAccounts->withToken('uvwxyz456789')->getAuthedUser();
 #### Facade
 
 ```php
-use GhostZero\BitinflowAccounts\Facades\BitinflowAccounts;
+use Bitinflow\Accounts\Facades\BitinflowAccounts;
 
 BitinflowAccounts::withClientId('abc123')->withToken('abcdef123456')->getAuthedUser();
 ```

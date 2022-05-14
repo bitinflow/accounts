@@ -2,7 +2,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use GhostZero\BitinflowAccounts\BitinflowAccounts;
+use Bitinflow\Accounts\BitinflowAccounts;
 use Illuminate\Support\Arr;
 
 $markdown = collect(class_uses(BitinflowAccounts::class))

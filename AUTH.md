@@ -3,8 +3,8 @@
 This method should typically be called in the `boot` method of your `AuthServiceProvider` class:
 
 ```php
-use GhostZero\BitinflowAccounts\BitinflowAccounts;
-use GhostZero\BitinflowAccounts\Providers\BitinflowAccountsSsoUserProvider;
+use Bitinflow\Accounts\BitinflowAccounts;
+use Bitinflow\Accounts\Providers\BitinflowAccountsSsoUserProvider;
 use Illuminate\Http\Request;
 
 /**

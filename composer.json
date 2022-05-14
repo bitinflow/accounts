@@ -5,7 +5,11 @@
     "authors": [
         {
             "name": "René Preuß",
-            "email": "rene@preuss.io"
+            "email": "rene@bitinflow.com"
+        },
+        {
+            "name": "Maurice Preuß",
+            "email": "maurice@bitinflow.com"
         }
     ],
     "require": {
@@ -24,12 +28,12 @@
     },
     "autoload": {
         "psr-4": {
-            "GhostZero\\BitinflowAccounts\\": "src/GhostZero/BitinflowAccounts"
+            "Bitinflow\\Accounts\\": "src/Accounts"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "GhostZero\\BitinflowAccounts\\Tests\\": "tests/GhostZero/BitinflowAccounts"
+            "Bitinflow\\Accounts\\Tests\\": "tests/Accounts"
         }
     },
     "scripts": {
@@ -39,10 +43,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "GhostZero\\BitinflowAccounts\\Providers\\BitinflowAccountsServiceProvider"
+                "Bitinflow\\Accounts\\Providers\\BitinflowAccountsServiceProvider"
             ],
             "aliases": {
-                "BitinflowAccounts": "GhostZero\\BitinflowAccounts\\Facades\\BitinflowAccounts"
+                "BitinflowAccounts": "Bitinflow\\Accounts\\Facades\\BitinflowAccounts"
             }
         }
     }
