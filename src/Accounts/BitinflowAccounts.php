@@ -96,16 +96,16 @@ class BitinflowAccounts
      */
     public function __construct()
     {
-        if ($clientId = config('bitinflow-accounts-api.client_id')) {
+        if ($clientId = config('bitinflow-accounts.client_id')) {
             $this->setClientId($clientId);
         }
-        if ($clientSecret = config('bitinflow-accounts-api.client_secret')) {
+        if ($clientSecret = config('bitinflow-accounts.client_secret')) {
             $this->setClientSecret($clientSecret);
         }
-        if ($redirectUri = config('bitinflow-accounts-api.redirect_url')) {
+        if ($redirectUri = config('bitinflow-accounts.redirect_url')) {
             $this->setRedirectUri($redirectUri);
         }
-        if ($redirectUri = config('bitinflow-accounts-api.base_url')) {
+        if ($redirectUri = config('bitinflow-accounts.base_url')) {
             self::setBaseUrl($redirectUri);
         }
         $this->client = new Client([
