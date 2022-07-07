@@ -20,7 +20,7 @@ public function boot()
             $app->make(Request::class),
             $config['model'],
             $config['fields'] ?? [],
-            $config['assess_token_field'] ?? null
+            $config['access_token_field'] ?? null
         );
     });
 }
@@ -55,7 +55,7 @@ reference the provider in the `providers` configuration of your `auth.php` confi
         'driver' => 'sso-users',
         'model' => App\Models\User::class,
         'fields' => ['first_name', 'last_name', 'email'],
-        'assess_token_field' => 'sso_access_token',
+        'access_token_field' => 'sso_access_token',
     ],
 ],
 ```
