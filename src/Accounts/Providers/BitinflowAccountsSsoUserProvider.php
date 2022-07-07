@@ -47,21 +47,22 @@ class BitinflowAccountsSsoUserProvider implements UserProvider
             ->where($model->getAuthIdentifierName(), $identifier)
             ->first();
 
-        // Update access token when updated
-        if ($this->accessTokenField) {
-            $user[$this->accessTokenField] = $token;
-
-            if ($user->isDirty()) {
-                $user->save();
-            }
-        }
-
+        // Return user when found
         if ($user) {
+            // Update access token when updated
+            if ($this->accessTokenField) {
+                $user[$this->accessTokenField] = $token;
+
+                if ($user->isDirty()) {
+                    $user->save();
+                }
+            }
+            
             return $user;
         }
 
+        // Create new user
         $this->bitinflowAccounts->setToken($token);
-
         $result = $this->bitinflowAccounts->getAuthedUser();
 
         if (!$result->success()) {
