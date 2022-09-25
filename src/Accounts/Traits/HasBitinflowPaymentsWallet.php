@@ -96,7 +96,12 @@ trait HasBitinflowPaymentsWallet
     public function chargeBalance(float $amount, string $decription): bool
     {
         try {
-            $order = $this->createOrder($decription);
+            $order = $this->createOrder([
+                'name' => $decription,
+                'description' => 'one-time payment',
+                'amount' => 1,
+                'price' => $amount,
+            ]);
 
             return $this->checkoutOrder($order->id);
         } catch (GuzzleException $e) {
