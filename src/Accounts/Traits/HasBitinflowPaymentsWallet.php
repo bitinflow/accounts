@@ -161,12 +161,14 @@ trait HasBitinflowPaymentsWallet
     public function setDefaultWallet(string $token): bool
     {
         try {
-            return (bool)$this->asPaymentsUser('PUT', sprintf('wallets/default', [
+            $this->asPaymentsUser('PUT', sprintf('wallets/default', [
                 'token' => $token
             ]));
         } catch (GuzzleException $e) {
             return false;
         }
+        
+        return true;
     }
 
     /**
@@ -247,10 +249,12 @@ trait HasBitinflowPaymentsWallet
     public function checkoutSubscription(string $id): bool
     {
         try {
-            return (bool)$this->asPaymentsUser('PUT', sprintf('subscriptions/%s/checkout', $id));
+            $this->asPaymentsUser('PUT', sprintf('subscriptions/%s/checkout', $id));
         } catch (GuzzleException $e) {
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -262,10 +266,12 @@ trait HasBitinflowPaymentsWallet
     public function revokeSubscription(string $id): bool
     {
         try {
-            return (bool)$this->asPaymentsUser('PUT', sprintf('subscriptions/%s/revoke', $id));
+            $this->asPaymentsUser('PUT', sprintf('subscriptions/%s/revoke', $id));
         } catch (GuzzleException $e) {
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -277,10 +283,12 @@ trait HasBitinflowPaymentsWallet
     public function resumeSubscription(string $id): bool
     {
         try {
-            return (bool)$this->asPaymentsUser('PUT', sprintf('subscriptions/%s/resume', $id));
+            $this->asPaymentsUser('PUT', sprintf('subscriptions/%s/resume', $id));
         } catch (GuzzleException $e) {
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -341,10 +349,12 @@ trait HasBitinflowPaymentsWallet
     public function checkoutOrder(string $id): bool
     {
         try {
-            return (bool)$this->asPaymentsUser('PUT', sprintf('orders/%s/checkout', $id));
+            $this->asPaymentsUser('PUT', sprintf('orders/%s/checkout', $id));
         } catch (GuzzleException $e) {
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -356,10 +366,12 @@ trait HasBitinflowPaymentsWallet
     public function revokeOrder(string $id): bool
     {
         try {
-            return (bool)$this->asPaymentsUser('PUT', sprintf('orders/%s/revoke', $id));
+            $this->asPaymentsUser('PUT', sprintf('orders/%s/revoke', $id));
         } catch (GuzzleException $e) {
             return false;
         }
+
+        return true;
     }
 
     /**
