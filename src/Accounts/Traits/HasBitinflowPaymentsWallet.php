@@ -70,11 +70,11 @@ trait HasBitinflowPaymentsWallet
     /**
      * Deposit given amount from bank to account.
      *
-     * @param $amount
-     * @param $description
+     * @param float $amount
+     * @param string $description
      * @return bool
      */
-    public function depositBalance($amount, $decription): bool
+    public function depositBalance(float $amount, string $decription): bool
     {
         try {
             $this->asPaymentsUser('PUT', sprintf('wallet/deposit', [
@@ -89,26 +89,16 @@ trait HasBitinflowPaymentsWallet
     /**
      * Charge given amount from account.
      *
-     * @param $amount
-     * @param $description
-     * @param $payload
+     * @param float $amount
+     * @param string $decription
      * @return bool
      */
-    public function chargeBalance($amount, $decription, $payload = []): bool
+    public function chargeBalance(float $amount, string $decription): bool
     {
         try {
-            $order = $this->asPaymentsUser('POST', sprintf('orders', [
-                'order_items' => [
-                    'name' => 'One time charge',
-                    'description' => $decription,
-                    'amount' => 1,
-                    'price' => $amount,
-                    'payload' => $payload,
-                ],
-                'checkout' => true,
-            ]));
+            $order = $this->createOrder($decription);
 
-            return $order->data->status === 'completed';
+            return $this->checkoutOrder($order->id);
         } catch (GuzzleException $e) {
             return false;
         }
@@ -128,6 +118,11 @@ trait HasBitinflowPaymentsWallet
         }
     }
 
+    /**
+     * Get all wallets that belongs to the user.
+     *
+     * @return array|null
+     */
     public function getWallets(): ?array
     {
         try {
@@ -152,19 +147,42 @@ trait HasBitinflowPaymentsWallet
         }
     }
 
-    public function setDefaultWallet($walletId): bool
+    /**
+     * Set default wallet to given wallet token.
+     *
+     * @param string $token default payment method token
+     * @return bool
+     */
+    public function setDefaultWallet(string $token): bool
     {
-        // TODO
+        try {
+            return (bool)$this->asPaymentsUser('PUT', sprintf('wallets/default', [
+                'token' => $token
+            ]));
+        } catch (GuzzleException $e) {
+            return false;
+        }
     }
 
-    public function hasSubscribed($name = 'default'): bool
+    /**
+     * Get subscriptions from user.
+     *
+     * @return array|null
+     */
+    public function getSubscriptions(): ?array
     {
-        $subscription = $this->getSubscription($name);
-
-        return $subscription && $subscription->status === 'settled' || $subscription && $subscription->resumeable;
+        try {
+            return $this->getPaymentsUser()->data->subscriptions;
+        } catch (GuzzleException $e) {
+            return null;
+        }
     }
 
-    public function getSubscription($name = 'default'): ?object
+    /**
+     * @param string $name
+     * @return object|null
+     */
+    public function getSubscription(string $name = 'default'): ?object
     {
         foreach ($this->getSubscriptions() as $subscription) {
             if (isset($subscription->payload->name) && $subscription->payload->name === $name) {
@@ -173,25 +191,6 @@ trait HasBitinflowPaymentsWallet
         }
 
         return null;
-    }
-
-    /**
-     * Get vat from user.
-     *
-     * @return array|null
-     * @throws GuzzleException
-     */
-    public function getSubscriptions(): ?array
-    {
-        $subscriptions = $this->getPaymentsUser()->data->subscriptions;
-
-        foreach ($subscriptions as $key => $subscription) {
-            if (!isset($subscription->payload->client_id) || $subscription->payload->client_id !== config('bitinflow-accounts.client_id')) {
-                unset($subscriptions[$key]);
-            }
-        }
-
-        return $subscriptions;
     }
 
     /**
@@ -208,13 +207,11 @@ trait HasBitinflowPaymentsWallet
      */
     public function createSubscription(string $name, array $attributes, array $payload = [], bool $checkout = false): object|false
     {
-        $client = [
-            'name' => $name,
-            'client_id' => config('bitinflow-accounts.client_id')
-        ];
         $defaults = ['period' => 'monthly'];
         $attributes = array_merge(array_merge($defaults, $attributes), [
-            'payload' => array_merge($payload, $client),
+            'payload' => array_merge($payload, [
+                'name' => $name,
+            ]),
             'checkout' => $checkout
         ]);
 
@@ -223,6 +220,17 @@ trait HasBitinflowPaymentsWallet
         } catch (GuzzleException $e) {
             return false;
         }
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function hasSubscribed(string $name = 'default'): bool
+    {
+        $subscription = $this->getSubscription($name);
+
+        return $subscription && $subscription->status === 'settled' || $subscription && $subscription->resumeable;
     }
 
     /**
@@ -243,10 +251,10 @@ trait HasBitinflowPaymentsWallet
     /**
      * Revoke a running subscription.
      *
-     * @param $id
+     * @param string $id
      * @return bool
      */
-    public function revokeSubscription($id): bool
+    public function revokeSubscription(string $id): bool
     {
         try {
             return (bool)$this->asPaymentsUser('PUT', sprintf('subscriptions/%s/revoke', $id));
@@ -258,10 +266,10 @@ trait HasBitinflowPaymentsWallet
     /**
      * Resume a running subscription.
      *
-     * @param $id
+     * @param string $id
      * @return bool
      */
-    public function resumeSubscription($id): bool
+    public function resumeSubscription(string $id): bool
     {
         try {
             return (bool)$this->asPaymentsUser('PUT', sprintf('subscriptions/%s/resume', $id));
@@ -271,13 +279,97 @@ trait HasBitinflowPaymentsWallet
     }
 
     /**
+     * Get orders from user.
+     *
+     * @return array|null
+     */
+    public function getOrders(): ?array
+    {
+        try {
+            return $this->getPaymentsUser()->data->orders;
+        } catch (GuzzleException $e) {
+            return null;
+        }
+    }
+
+    /**
+     * @param string $id
+     * @return object|null
+     */
+    public function getOrder(string $id): ?object
+    {
+        try {
+            return $this->asPaymentsUser('GET', sprintf('orders/%s', $id));
+        } catch (GuzzleException $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Create a new order.
+     *
+     * @param array $name
+     * @param array $attributes
+     * @param array $payload optional data that is stored in the order
+     * @param bool $checkout optional checkout it directly
+     * @return object|false
+     */
+    public function createOrder(string $name, array $attributes = [], array $payload = [], bool $checkout = false): object|false
+    {
+        $defaults = ['amount' => 1];
+        $attributes = array_merge(array_merge($defaults, $attributes), [
+            'payload' => array_merge([
+                'name' => $name,
+            ], $client),
+            'checkout' => $checkout
+        ]);
+
+        try {
+            return $this->asPaymentsUser('POST', 'orders', $attributes)->data;
+        } catch (GuzzleException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Checkout given subscription.
+     *
+     * @param string $id
+     * @return bool
+     */
+    public function checkoutOrder(string $id): bool
+    {
+        try {
+            return (bool)$this->asPaymentsUser('PUT', sprintf('orders/%s/checkout', $id));
+        } catch (GuzzleException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Revoke a running subscription.
+     *
+     * @param string $id
+     * @return bool
+     */
+    public function revokeOrder(string $id): bool
+    {
+        try {
+            return (bool)$this->asPaymentsUser('PUT', sprintf('orders/%s/revoke', $id));
+        } catch (GuzzleException $e) {
+            return false;
+        }
+    }
+
+    /**
      * A setup intent guides you through the process of setting up and saving
      * a customer's payment credentials for future payments.
      *
+     * @param string $success_path
      * @return string
      */
-    public function createSetupIntent($success_path = null): string
+    public function createSetupIntent(string $success_path = null): string
     {
-        return sprintf('%swallet?continue_url=%s', config('bitinflow-accounts.payments.dashboard_url'), urlencode(url()->to($success_path)));
+        return sprintf('%swallet/?continue_url=%s', config('bitinflow-accounts.payments.dashboard_url'), urlencode(url()->to($success_path)));
     }
 }
