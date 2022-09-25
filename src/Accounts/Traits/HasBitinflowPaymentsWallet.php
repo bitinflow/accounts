@@ -308,19 +308,15 @@ trait HasBitinflowPaymentsWallet
     /**
      * Create a new order.
      *
-     * @param array $name
+     * @param array $order_items
      * @param array $attributes
-     * @param array $payload optional data that is stored in the order
      * @param bool $checkout optional checkout it directly
      * @return object|false
      */
-    public function createOrder(string $name, array $attributes = [], array $payload = [], bool $checkout = false): object|false
+    public function createOrder(array $order_items = [], array $attributes = [], bool $checkout = false): object|false
     {
-        $defaults = ['amount' => 1];
-        $attributes = array_merge(array_merge($defaults, $attributes), [
-            'payload' => array_merge([
-                'name' => $name,
-            ], $client),
+        $attributes = array_merge($attributes, [
+            'order_items' => $order_items,
             'checkout' => $checkout
         ]);
 
