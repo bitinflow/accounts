@@ -60,11 +60,7 @@ trait HasBitinflowPaymentsWallet
      */
     public function getBalance(): ?float
     {
-        try {
-            return $this->getPaymentsUser()->data->balance;
-        } catch (GuzzleException $e) {
-            return null;
-        }
+        return $this->getPaymentsUser()->data->balance;
     }
 
     /**
@@ -76,14 +72,10 @@ trait HasBitinflowPaymentsWallet
      */
     public function depositBalance(float $amount, string $decription): bool
     {
-        try {
-            $this->asPaymentsUser('PUT', sprintf('wallet/deposit', [
-                'amount' => $amount,
-                'decription' => $decription,
-            ]));
-        } catch (GuzzleException $e) {
-            return false;
-        }
+        $this->asPaymentsUser('PUT', sprintf('wallet/deposit', [
+            'amount' => $amount,
+            'decription' => $decription,
+        ]));
     }
 
     /**
@@ -95,18 +87,14 @@ trait HasBitinflowPaymentsWallet
      */
     public function chargeBalance(float $amount, string $decription): bool
     {
-        try {
-            $order = $this->createOrder([
-                'name' => $decription,
-                'description' => 'one-time payment',
-                'amount' => 1,
-                'price' => $amount,
-            ]);
+        $order = $this->createOrder([
+            'name' => $decription,
+            'description' => 'one-time payment',
+            'amount' => 1,
+            'price' => $amount,
+        ]);
 
-            return $this->checkoutOrder($order->id);
-        } catch (GuzzleException $e) {
-            return false;
-        }
+        return $this->checkoutOrder($order->id);
     }
 
     /**
@@ -116,11 +104,7 @@ trait HasBitinflowPaymentsWallet
      */
     public function getVat(): ?int
     {
-        try {
-            return $this->getPaymentsUser()->data->taxation->vat;
-        } catch (GuzzleException $e) {
-            return null;
-        }
+        return $this->getPaymentsUser()->data->taxation->vat;
     }
 
     /**
@@ -130,11 +114,7 @@ trait HasBitinflowPaymentsWallet
      */
     public function getWallets(): ?array
     {
-        try {
-            return $this->getPaymentsUser()->data->wallets;
-        } catch (GuzzleException $e) {
-            return null;
-        }
+        return $this->getPaymentsUser()->data->wallets;
     }
 
     /**
@@ -145,11 +125,7 @@ trait HasBitinflowPaymentsWallet
      */
     public function hasWallet(): ?bool
     {
-        try {
-            return $this->getPaymentsUser()->data->has_wallet;
-        } catch (GuzzleException $e) {
-            return null;
-        }
+        return $this->getPaymentsUser()->data->has_wallet;
     }
 
     /**
@@ -160,44 +136,30 @@ trait HasBitinflowPaymentsWallet
      */
     public function setDefaultWallet(string $token): bool
     {
-        try {
-            $this->asPaymentsUser('PUT', sprintf('wallets/default', [
-                'token' => $token
-            ]));
-        } catch (GuzzleException $e) {
-            return false;
-        }
-        
+        $this->asPaymentsUser('PUT', sprintf('wallets/default', [
+            'token' => $token
+        ]));
+
         return true;
     }
 
     /**
      * Get subscriptions from user.
      *
-     * @return array|null
+     * @return object|null
      */
-    public function getSubscriptions(): ?array
+    public function getSubscriptions(): ?object
     {
-        try {
-            return $this->getPaymentsUser()->data->subscriptions;
-        } catch (GuzzleException $e) {
-            return null;
-        }
+        return $this->asPaymentsUser('GET', 'subscriptions');
     }
 
     /**
-     * @param string $name
+     * @param string $id
      * @return object|null
      */
-    public function getSubscription(string $name = 'default'): ?object
+    public function getSubscription(string $id): ?object
     {
-        foreach ($this->getSubscriptions() as $subscription) {
-            if (isset($subscription->payload->name) && $subscription->payload->name === $name) {
-                return $subscription;
-            }
-        }
-
-        return null;
+        return $this->asPaymentsUser('GET', sprintf('subscriptions/%s', $id));
     }
 
     /**
@@ -222,11 +184,12 @@ trait HasBitinflowPaymentsWallet
             'checkout' => $checkout
         ]);
 
-        try {
-            return $this->asPaymentsUser('POST', 'subscriptions', $attributes)->data;
-        } catch (GuzzleException $e) {
-            return false;
-        }
+        return $this->asPaymentsUser('POST', 'subscriptions', $attributes)->data;
+    }
+
+    public function createSubscriptionCheckoutIntent($subscription, $success_path = null)
+    {
+        return sprintf('%ssubscriptions/%s/?continue_url=%s', config('bitinflow-accounts.payments.dashboard_url'), $subscription, urlencode(url()->to($success_path)));
     }
 
     /**
@@ -248,11 +211,7 @@ trait HasBitinflowPaymentsWallet
      */
     public function checkoutSubscription(string $id): bool
     {
-        try {
-            $this->asPaymentsUser('PUT', sprintf('subscriptions/%s/checkout', $id));
-        } catch (GuzzleException $e) {
-            return false;
-        }
+        $this->asPaymentsUser('PUT', sprintf('subscriptions/%s/checkout', $id));
 
         return true;
     }
@@ -265,11 +224,7 @@ trait HasBitinflowPaymentsWallet
      */
     public function revokeSubscription(string $id): bool
     {
-        try {
-            $this->asPaymentsUser('PUT', sprintf('subscriptions/%s/revoke', $id));
-        } catch (GuzzleException $e) {
-            return false;
-        }
+        $this->asPaymentsUser('PUT', sprintf('subscriptions/%s/revoke', $id));
 
         return true;
     }
@@ -282,11 +237,7 @@ trait HasBitinflowPaymentsWallet
      */
     public function resumeSubscription(string $id): bool
     {
-        try {
-            $this->asPaymentsUser('PUT', sprintf('subscriptions/%s/resume', $id));
-        } catch (GuzzleException $e) {
-            return false;
-        }
+        $this->asPaymentsUser('PUT', sprintf('subscriptions/%s/resume', $id));
 
         return true;
     }
@@ -294,15 +245,11 @@ trait HasBitinflowPaymentsWallet
     /**
      * Get orders from user.
      *
-     * @return array|null
+     * @return object|null
      */
-    public function getOrders(): ?array
+    public function getOrders(): ?object
     {
-        try {
-            return $this->getPaymentsUser()->data->orders;
-        } catch (GuzzleException $e) {
-            return null;
-        }
+        return $this->asPaymentsUser('GET', 'orders');
     }
 
     /**
@@ -311,11 +258,7 @@ trait HasBitinflowPaymentsWallet
      */
     public function getOrder(string $id): ?object
     {
-        try {
-            return $this->asPaymentsUser('GET', sprintf('orders/%s', $id));
-        } catch (GuzzleException $e) {
-            return null;
-        }
+        return $this->asPaymentsUser('GET', sprintf('orders/%s', $id));
     }
 
     /**
@@ -333,11 +276,7 @@ trait HasBitinflowPaymentsWallet
             'checkout' => $checkout
         ]);
 
-        try {
-            return $this->asPaymentsUser('POST', 'orders', $attributes)->data;
-        } catch (GuzzleException $e) {
-            return false;
-        }
+        return $this->asPaymentsUser('POST', 'orders', $attributes)->data;
     }
 
     /**
@@ -348,11 +287,7 @@ trait HasBitinflowPaymentsWallet
      */
     public function checkoutOrder(string $id): bool
     {
-        try {
-            $this->asPaymentsUser('PUT', sprintf('orders/%s/checkout', $id));
-        } catch (GuzzleException $e) {
-            return false;
-        }
+        $this->asPaymentsUser('PUT', sprintf('orders/%s/checkout', $id));
 
         return true;
     }
@@ -365,13 +300,29 @@ trait HasBitinflowPaymentsWallet
      */
     public function revokeOrder(string $id): bool
     {
-        try {
-            $this->asPaymentsUser('PUT', sprintf('orders/%s/revoke', $id));
-        } catch (GuzzleException $e) {
-            return false;
-        }
+        $this->asPaymentsUser('PUT', sprintf('orders/%s/revoke', $id));
 
         return true;
+    }
+
+    public function createCheckoutSession(array $payload)
+    {
+        return $this->asPaymentsUser('POST', 'checkout-sessions', $payload);
+    }
+
+    public function getCheckoutSession(string $id)
+    {
+        return $this->asPaymentsUser('GET', sprintf('checkout-sessions/%s', $id));
+    }
+
+    public function checkoutCheckoutSession(string $id)
+    {
+        return $this->asPaymentsUser('PUT', sprintf('checkout-sessions/%s/checkout', $id));
+    }
+
+    public function revokeCheckoutSession(string $id)
+    {
+        return $this->asPaymentsUser('PUT', sprintf('checkout-sessions/%s/revoke', $id));
     }
 
     /**
