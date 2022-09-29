@@ -34,7 +34,7 @@ trait HasBitinflowPaymentsWallet
      * @return mixed
      * @throws GuzzleException
      */
-    private function asPaymentsUser(string $method, string $url, array $attributes = []): mixed
+    protected function asPaymentsUser(string $method, string $url, array $attributes = []): mixed
     {
         $client = new Client([
             'base_uri' => config('bitinflow-accounts.payments.base_url'),
@@ -58,7 +58,7 @@ trait HasBitinflowPaymentsWallet
      * @return object|null
      * @throws GuzzleException
      */
-    public function getPaymentsUser(): ?object
+    protected function getPaymentsUser(): ?object
     {
         if (is_null($this->paymentsUser)) {
             $this->paymentsUser = $this->asPaymentsUser('GET', 'user');
