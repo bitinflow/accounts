@@ -10,7 +10,7 @@ class Orders
     {
         //
     }
-  
+
     /**
      * Get orders from user.
      *
@@ -33,18 +33,11 @@ class Orders
     /**
      * Create a new order.
      *
-     * @param array $order_items
      * @param array $attributes
-     * @param bool $checkout optional checkout it directly
      * @return object|false
      */
-    public function create(array $order_items = [], array $attributes = [], bool $checkout = false): object|false
+    public function create(array $attributes = []): object|false
     {
-        $attributes = array_merge($attributes, [
-            'order_items' => $order_items,
-            'checkout' => $checkout
-        ]);
-
         return $this->user->asPaymentsUser('POST', 'orders', $attributes)->data;
     }
 
