@@ -16,7 +16,7 @@ class Taxation
      *
      * @return int|null
      */
-    public function getVat(): ?int
+    public function get(): ?int
     {
         return $this->user->getPaymentsUser()->data->taxation->vat;
     }
