@@ -61,7 +61,7 @@ class Subscriptions
      */
     public function has(string $name = 'default'): bool
     {
-        $subscription = $this->getSubscription($name);
+        $subscription = $this->get($name);
 
         return $subscription && $subscription->status === 'settled' || $subscription && $subscription->resumeable;
     }
