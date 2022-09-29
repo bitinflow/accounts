@@ -18,7 +18,7 @@ class Subscriptions
      */
     public function all(): ?object
     {
-        return $this->asPaymentsUser('GET', 'subscriptions');
+        return $this->user->asPaymentsUser('GET', 'subscriptions');
     }
 
     /**
@@ -27,7 +27,7 @@ class Subscriptions
      */
     public function get(string $id): ?object
     {
-        return $this->asPaymentsUser('GET', sprintf('subscriptions/%s', $id));
+        return $this->user->asPaymentsUser('GET', sprintf('subscriptions/%s', $id));
     }
 
     /**
@@ -52,7 +52,7 @@ class Subscriptions
             'checkout' => $checkout
         ]);
 
-        return $this->asPaymentsUser('POST', 'subscriptions', $attributes)->data;
+        return $this->user->asPaymentsUser('POST', 'subscriptions', $attributes)->data;
     }
 
     /**
@@ -74,7 +74,7 @@ class Subscriptions
      */
     public function checkout(string $id): bool
     {
-        $this->asPaymentsUser('PUT', sprintf('subscriptions/%s/checkout', $id));
+        $this->user->asPaymentsUser('PUT', sprintf('subscriptions/%s/checkout', $id));
 
         return true;
     }
@@ -87,7 +87,7 @@ class Subscriptions
      */
     public function revoke(string $id): bool
     {
-        $this->asPaymentsUser('PUT', sprintf('subscriptions/%s/revoke', $id));
+        $this->user->asPaymentsUser('PUT', sprintf('subscriptions/%s/revoke', $id));
 
         return true;
     }
@@ -100,7 +100,7 @@ class Subscriptions
      */
     public function resume(string $id): bool
     {
-        $this->asPaymentsUser('PUT', sprintf('subscriptions/%s/resume', $id));
+        $this->user->asPaymentsUser('PUT', sprintf('subscriptions/%s/resume', $id));
 
         return true;
     }
