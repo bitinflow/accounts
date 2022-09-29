@@ -13,6 +13,14 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Http\Client\PendingRequest;
 
+/**
+ * @property Balance balance
+ * @property CheckoutSessions checkout_sessions
+ * @property Orders orders
+ * @property Subscriptions subscriptions
+ * @property Taxation taxation
+ * @property Wallets wallets
+ */
 trait HasBitinflowPaymentsWallet
 {
     protected $paymentsUser = null;
@@ -58,33 +66,33 @@ trait HasBitinflowPaymentsWallet
 
         return $this->paymentsUser;
     }
-    
-    public function balance(): Balance
+
+    public function getBalanceAttribute(): Balance
     {
         return new Balance($this);
     }
-    
-    public function checkoutSessions(): CheckoutSessions
+
+    public function getCheckoutSessionsAttribute(): CheckoutSessions
     {
         return new CheckoutSessions($this);
     }
-    
-    public function orders(): Orders
+
+    public function getOrdersAttribute(): Orders
     {
         return new Orders($this);
     }
-    
-    public function subscriptions(): Subscriptions
+
+    public function getSubscriptionsAttribute(): Subscriptions
     {
         return new Subscriptions($this);
     }
-    
-    public function taxation(): Taxation
+
+    public function getTaxationAttribute(): Taxation
     {
         return new Taxation($this);
     }
 
-    public function wallets(): Wallets
+    public function getWalletsAttribute(): Wallets
     {
         return new Wallets($this);
     }
