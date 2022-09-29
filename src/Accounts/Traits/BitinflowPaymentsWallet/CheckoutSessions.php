@@ -11,22 +11,22 @@ class CheckoutSessions
         //
     }
   
-    public function createCheckoutSession(array $payload)
+    public function create(array $payload)
     {
         return $this->user->asPaymentsUser('POST', 'checkout-sessions', $payload);
     }
 
-    public function getCheckoutSession(string $id)
+    public function get(string $id)
     {
         return $this->user->asPaymentsUser('GET', sprintf('checkout-sessions/%s', $id));
     }
 
-    public function checkoutCheckoutSession(string $id)
+    public function checkout(string $id)
     {
         return $this->user->asPaymentsUser('PUT', sprintf('checkout-sessions/%s/checkout', $id));
     }
 
-    public function revokeCheckoutSession(string $id)
+    public function revoke(string $id)
     {
         return $this->user->asPaymentsUser('PUT', sprintf('checkout-sessions/%s/revoke', $id));
     }
