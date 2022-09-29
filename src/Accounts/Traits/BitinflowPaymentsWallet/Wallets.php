@@ -10,7 +10,7 @@ class Wallets
     {
         //
     }
-  
+
     /**
      * Get all wallets that belongs to the user.
      *
@@ -45,5 +45,10 @@ class Wallets
         ]));
 
         return true;
+    }
+
+    public function setupIntent()
+    {
+        return sprintf('%swallet/?continue_url=%s', config('bitinflow-accounts.payments.dashboard_url'), urlencode(url()->to($success_path)));
     }
 }
