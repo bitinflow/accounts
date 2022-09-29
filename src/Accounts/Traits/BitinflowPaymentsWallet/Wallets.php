@@ -16,7 +16,7 @@ class Wallets
      *
      * @return array|null
      */
-    public function get(): ?array
+    public function all(): ?array
     {
         return $this->user->getPaymentsUser()->data->wallets;
     }
