@@ -10,7 +10,7 @@ class Subscriptions
     {
         //
     }
-  
+
     /**
      * Get subscriptions from user.
      *
@@ -37,21 +37,11 @@ class Subscriptions
      *                            name, description, period, price
      *                            and following attributes are optional:
      *                            vat, payload, ends_at, webhook_url, webhook_secret
-     * @param array $payload optional data that is stored in the subscription
-     * @param bool $checkout optional checkout it directly
      * @return object|false       the subscription object
      * @throws GuzzleException
      */
-    public function create(string $name, array $attributes, array $payload = [], bool $checkout = false): object|false
+    public function create(array $attributes): object|false
     {
-        $defaults = ['period' => 'monthly'];
-        $attributes = array_merge(array_merge($defaults, $attributes), [
-            'payload' => array_merge($payload, [
-                'name' => $name,
-            ]),
-            'checkout' => $checkout
-        ]);
-
         return $this->user->asPaymentsUser('POST', 'subscriptions', $attributes)->data;
     }
 
