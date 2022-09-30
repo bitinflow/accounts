@@ -46,7 +46,7 @@ Bitinflow\Accounts\Providers\BitinflowAccountsServiceProvider::class,
 protected $listen = [
     \SocialiteProviders\Manager\SocialiteWasCalled::class => [
         // add your listeners (aka providers) here
-        'GhostZero\\BitinflowAccounts\\Socialite\\BitinflowExtendSocialite@handle',
+        'Bitinflow\\Accounts\\Socialite\\BitinflowExtendSocialite@handle',
     ],
 ];
 ```
