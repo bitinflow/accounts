@@ -47,7 +47,7 @@ Bitinflow\Accounts\Providers\BitinflowAccountsServiceProvider::class,
 protected $listen = [
     \SocialiteProviders\Manager\SocialiteWasCalled::class => [
         // add your listeners (aka providers) here
-        'GhostZero\\BitinflowAccounts\\Socialite\\BitinflowExtendSocialite@handle',
+        'Bitinflow\\Accounts\\Socialite\\BitinflowExtendSocialite@handle',
     ],
 ];
 ```
@@ -57,7 +57,7 @@ protected $listen = [
 Copy configuration to config folder:
 
 ```
-$ bitinflow-accounts
+$ php artisan vendor:publish --provider="Bitinflow\Accounts\Providers\BitinflowAccountsServiceProvider"
 ```
 
 Add environmental variables to your `.env`
