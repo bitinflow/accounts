@@ -28,12 +28,15 @@
     },
     "autoload": {
         "psr-4": {
-            "Bitinflow\\Accounts\\": "src/Accounts"
+            "Bitinflow\\Accounts\\": "src/Accounts",
+            "Bitinflow\\Payments\\": "src/Payments",
+            "Bitinflow\\Support\\": "src/Support"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Bitinflow\\Accounts\\Tests\\": "tests/Accounts"
+            "Bitinflow\\Accounts\\Tests\\": "tests/Accounts",
+            "Bitinflow\\Payments\\Tests\\": "tests/Payments"
         }
     },
     "scripts": {

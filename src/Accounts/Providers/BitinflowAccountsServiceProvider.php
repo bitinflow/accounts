@@ -10,13 +10,13 @@ use Bitinflow\Accounts\BitinflowAccounts;
 use Bitinflow\Accounts\Helpers\JwtParser;
 use Bitinflow\Accounts\Contracts;
 use Bitinflow\Accounts\Repository;
+use Bitinflow\Payments\BitinflowPayments;
 use Illuminate\Auth\RequestGuard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
 class BitinflowAccountsServiceProvider extends ServiceProvider
 {
-
     /**
      * Bootstrap the application services.
      *
@@ -40,6 +40,9 @@ class BitinflowAccountsServiceProvider extends ServiceProvider
         $this->app->singleton(Contracts\AppTokenRepository::class, Repository\AppTokenRepository::class);
         $this->app->singleton(BitinflowAccounts::class, function () {
             return new BitinflowAccounts;
+        });
+        $this->app->singleton(BitinflowPayments::class, function () {
+            return new BitinflowPayments;
         });
 
         $this->registerGuard();
@@ -85,6 +88,9 @@ class BitinflowAccountsServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return [BitinflowAccounts::class];
+        return [
+            BitinflowAccounts::class,
+            BitinflowPayments::class,
+        ];
     }
 }

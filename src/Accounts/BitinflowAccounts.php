@@ -8,6 +8,7 @@ use Bitinflow\Accounts\Exceptions\RequestRequiresClientIdException;
 use Bitinflow\Accounts\Exceptions\RequestRequiresRedirectUriException;
 use Bitinflow\Accounts\Helpers\Paginator;
 use Bitinflow\Accounts\Traits;
+use Bitinflow\Support\Query;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
@@ -18,12 +19,9 @@ use Illuminate\Contracts\Auth\Authenticatable;
  */
 class BitinflowAccounts
 {
-
     use Traits\OauthTrait;
     use Traits\SshKeysTrait;
     use Traits\UsersTrait;
-
-    use Traits\HasBitinflowPaymentsWallet;
 
     use ApiOperations\Delete;
     use ApiOperations\Get;
@@ -35,61 +33,51 @@ class BitinflowAccounts
      *
      * @var string
      */
-    public static $cookie = 'bitinflow_token';
+    public static string $cookie = 'bitinflow_token';
+
     /**
      * Indicates if Bitinflow Accounts should ignore incoming CSRF tokens.
-     *
-     * @var bool
      */
-    public static $ignoreCsrfToken = false;
+    public static bool $ignoreCsrfToken = false;
+
     /**
      * Indicates if Bitinflow Accounts should unserializes cookies.
-     *
-     * @var bool
      */
-    public static $unserializesCookies = false;
-    private static $baseUrl = 'https://accounts.bitinflow.com/api/';
+    public static bool $unserializesCookies = false;
+
+    private static string $baseUrl = 'https://accounts.bitinflow.com/api/';
+
     /**
      * Guzzle is used to make http requests.
-     *
-     * @var Client
      */
-    protected $client;
+    protected Client $client;
 
     /**
      * Paginator object.
-     *
-     * @var Paginator
      */
-    protected $paginator;
+    protected Paginator $paginator;
 
     /**
      * bitinflow Accounts OAuth token.
      *
-     * @var string|null
      */
-    protected $token = null;
+    protected ?string $token = null;
 
     /**
      * bitinflow Accounts client id.
      *
-     * @var string|null
      */
-    protected $clientId = null;
+    protected ?string $clientId = null;
 
     /**
      * bitinflow Accounts client secret.
-     *
-     * @var string|null
      */
-    protected $clientSecret = null;
+    protected ?string $clientSecret = null;
 
     /**
      * bitinflow Accounts OAuth redirect url.
-     *
-     * @var string|null
      */
-    protected $redirectUri = null;
+    protected ?string $redirectUri = null;
 
     /**
      * Constructor.
@@ -129,7 +117,7 @@ class BitinflowAccounts
      * @param string|null $cookie
      * @return string|static
      */
-    public static function cookie($cookie = null)
+    public static function cookie(string $cookie = null)
     {
         if (is_null($cookie)) {
             return static::$cookie;
@@ -268,7 +256,7 @@ class BitinflowAccounts
      * @return string|null
      * @throws RequestRequiresAuthenticationException
      */
-    public function getToken()
+    public function getToken(): ?string
     {
         if (!$this->token) {
             throw new RequestRequiresAuthenticationException;
@@ -323,7 +311,7 @@ class BitinflowAccounts
      * @param string $method       HTTP method
      * @param string $path         Query path
      * @param array $parameters    Query parameters
-     * @param Paginator $paginator Paginator object
+     * @param Paginator|null $paginator Paginator object
      * @param mixed|null $jsonBody JSON data
      *
      * @return Result     Result object
@@ -332,13 +320,14 @@ class BitinflowAccounts
      */
     public function query(string $method = 'GET', string $path = '', array $parameters = [], Paginator $paginator = null, $jsonBody = null): Result
     {
+        /** @noinspection DuplicatedCode */
         if ($paginator !== null) {
             $parameters[$paginator->action] = $paginator->cursor();
         }
         try {
             $response = $this->client->request($method, $path, [
-                'headers' => $this->buildHeaders($jsonBody ? true : false),
-                'query' => $this->buildQuery($parameters),
+                'headers' => $this->buildHeaders((bool)$jsonBody),
+                'query' => Query::build($parameters),
                 'json' => $jsonBody ?: null,
             ]);
             $result = new Result($response, null, $paginator);
@@ -399,26 +388,6 @@ class BitinflowAccounts
     public function setClientId(string $clientId): void
     {
         $this->clientId = $clientId;
-    }
-
-    /**
-     * Build query with support for multiple smae first-dimension keys.
-     *
-     * @param array $query
-     *
-     * @return string
-     */
-    public function buildQuery(array $query): string
-    {
-        $parts = [];
-        foreach ($query as $name => $value) {
-            $value = (array)$value;
-            array_walk_recursive($value, function ($value) use (&$parts, $name) {
-                $parts[] = urlencode($name) . '=' . urlencode($value);
-            });
-        }
-
-        return implode('&', $parts);
     }
 
     /**

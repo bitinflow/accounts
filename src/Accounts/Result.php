@@ -262,4 +262,9 @@ class Result
     {
         return $this->response;
     }
+
+    public function dump()
+    {
+        dump($this->data());
+    }
 }
