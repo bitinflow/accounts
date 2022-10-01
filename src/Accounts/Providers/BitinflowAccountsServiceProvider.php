@@ -8,6 +8,8 @@ use Bitinflow\Accounts\Auth\TokenGuard;
 use Bitinflow\Accounts\Auth\UserProvider;
 use Bitinflow\Accounts\BitinflowAccounts;
 use Bitinflow\Accounts\Helpers\JwtParser;
+use Bitinflow\Accounts\Contracts;
+use Bitinflow\Accounts\Repository;
 use Illuminate\Auth\RequestGuard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
@@ -35,6 +37,7 @@ class BitinflowAccountsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(dirname(__DIR__, 3) . '/config/bitinflow-accounts.php', 'bitinflow-accounts');
+        $this->app->singleton(Contracts\AppTokenRepository::class, Repository\AppTokenRepository::class);
         $this->app->singleton(BitinflowAccounts::class, function () {
             return new BitinflowAccounts;
         });

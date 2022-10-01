@@ -17,7 +17,7 @@ class Result
 {
 
     /**
-     * Query successfull.
+     * Query successful.
      *
      * @var boolean
      */
@@ -111,7 +111,7 @@ class Result
     private function setProperty(stdClass $jsonResponse, string $responseProperty, string $attribute = null): void
     {
         $classAttribute = $attribute ?? $responseProperty;
-        if ($jsonResponse !== null && property_exists($jsonResponse, $responseProperty)) {
+        if (property_exists($jsonResponse, $responseProperty)) {
             $this->{$classAttribute} = $jsonResponse->{$responseProperty};
         } elseif ($responseProperty === 'data') {
             $this->{$classAttribute} = $jsonResponse;
@@ -119,7 +119,7 @@ class Result
     }
 
     /**
-     * Returns wether the query was successfull.
+     * Returns whether the query was successfully.
      *
      * @return bool Success state
      */
@@ -186,8 +186,6 @@ class Result
 
     /**
      * Set the Paginator to fetch the next set of results.
-     *
-     * @return null|Paginator
      */
     public function next(): ?Paginator
     {
@@ -196,8 +194,6 @@ class Result
 
     /**
      * Set the Paginator to fetch the last set of results.
-     *
-     * @return null|Paginator
      */
     public function back(): ?Paginator
     {
@@ -233,8 +229,6 @@ class Result
      *
      * @param string $identifierAttribute Attribute to identify the users
      * @param string $insertTo            Data index to insert user data
-     *
-     * @return self
      */
     public function insertUsers(string $identifierAttribute = 'user_id', string $insertTo = 'user'): self
     {
@@ -258,11 +252,14 @@ class Result
 
     /**
      * Set the Paginator to fetch the first set of results.
-     *
-     * @return null|Paginator
      */
     public function first(): ?Paginator
     {
         return $this->paginator !== null ? $this->paginator->first() : null;
+    }
+
+    public function response(): ?ResponseInterface
+    {
+        return $this->response;
     }
 }
