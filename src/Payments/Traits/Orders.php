@@ -33,7 +33,7 @@ trait Orders
      */
     public function createOrder(array $parameters = []): Result
     {
-        return $this->query('POST', 'orders', $parameters)->data;
+        return $this->query('POST', 'orders', [], null, $parameters);
     }
 
     /**
