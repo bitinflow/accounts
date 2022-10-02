@@ -22,7 +22,7 @@ class Provider extends AbstractProvider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    protected $scopes = [Scope::READ_USER];
+    protected $scopes = [Scope::USER_READ];
 
     /**
      * {@inherticdoc}.
@@ -53,14 +53,14 @@ class Provider extends AbstractProvider implements ProviderInterface
     protected function getUserByToken($token)
     {
         $response = $this->getHttpClient()->get(
-            'https://accounts.bitinflow.com/api/user', [
+            'https://accounts.bitinflow.com/api/v3/user', [
             'headers' => [
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . $token,
             ],
         ]);
 
-        return json_decode($response->getBody()->getContents(), true);
+        return json_decode($response->getBody()->getContents(), true)->data;
     }
 
     /**
