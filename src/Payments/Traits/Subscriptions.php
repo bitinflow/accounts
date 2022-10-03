@@ -40,7 +40,7 @@ trait Subscriptions
      * @throws RequestRequiresClientIdException
      * @throws RequestRequiresMissingParametersException
      */
-    public function createSubscription(array $parameters): ?object
+    public function createSubscription(array $parameters): Result
     {
         $this->validateRequired($parameters, ['name', 'description', 'period', 'price']);
 
