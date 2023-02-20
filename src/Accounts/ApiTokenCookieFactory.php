@@ -77,6 +77,6 @@ class ApiTokenCookieFactory
             'sub' => $userId,
             'csrf' => $csrfToken,
             'expiry' => $expiration->getTimestamp(),
-        ], $this->encrypter->getKey());
+        ], $this->encrypter->getKey(), 'RS256');
     }
 }

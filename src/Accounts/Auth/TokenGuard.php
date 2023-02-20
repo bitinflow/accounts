@@ -7,6 +7,7 @@ use Bitinflow\Accounts\Helpers\JwtParser;
 use Bitinflow\Accounts\Traits\HasBitinflowTokens;
 use Exception;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Container\Container;
@@ -181,8 +182,10 @@ class TokenGuard
     {
         return (array)JWT::decode(
             CookieValuePrefix::remove($this->encrypter->decrypt($request->cookie(BitinflowAccounts::cookie()), BitinflowAccounts::$unserializesCookies)),
-            $this->encrypter->getKey(),
-            ['HS256']
+            new Key(
+                $this->encrypter->getKey(),
+                'RS256'
+            )
         );
     }
 
