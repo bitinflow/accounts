@@ -25,7 +25,7 @@ class JwtParser
         try {
             return JWT::decode(
                 $request->bearerToken(),
-                new Key($this->getOauthPublicKey(),'RS256')
+                new Key($this->getOauthPublicKey(), 'RS256')
             );
         } catch (Throwable $exception) {
             throw (new AuthenticationException());

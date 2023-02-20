@@ -184,7 +184,7 @@ class TokenGuard
             CookieValuePrefix::remove($this->encrypter->decrypt($request->cookie(BitinflowAccounts::cookie()), BitinflowAccounts::$unserializesCookies)),
             new Key(
                 $this->encrypter->getKey(),
-                'RS256'
+                'HS256'
             )
         );
     }
