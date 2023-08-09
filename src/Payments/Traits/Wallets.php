@@ -12,7 +12,7 @@ trait Wallets
      */
     public function getWallets(): Result
     {
-        return $this->query('GET', 'wallets');
+        return $this->query('GET', 'wallet');
     }
 
     /**
@@ -22,7 +22,7 @@ trait Wallets
      */
     public function setDefaultWallet(string $token): Result
     {
-        return $this->query('PUT', 'wallets/default', [], null, [
+        return $this->query('PUT', 'wallet/default', [], null, [
             'token' => $token
         ]);
     }
